@@ -10,8 +10,8 @@ import {
   collection,
   addDoc,
   db,
-  query,
-  where,
+  // query,
+  // where,
   getDocs,
   deleteDoc,
   doc,
@@ -43,8 +43,8 @@ export const registerUser = async (name, email, pass, callback) => {
     saveDataUser(name, email, user.uid);
     callback(true);
   }).catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
     if (error.code === 'auth/email-already-in-use') {
       alert('Este email ya está registrado');
     } else if (error.code === 'auth/invalid-email') {
@@ -72,12 +72,12 @@ export const registerWithGoogle = async (callback) => {
     callback(true);
   } catch (error) {
     // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
     // The email of the user's account used.
-    const email = error.email;
+    // const email = error.email;
     // The AuthCredential type that was used.
-    //const credential = GoogleAuthProvider.credentialFromError(error);
+    // const credential = GoogleAuthProvider.credentialFromError(error);
     // ...
     callback(false);
   }
@@ -89,8 +89,8 @@ export const loginUser = async (email, pass, callback) => {
     await signInWithEmailAndPassword(auth, email, pass);
     callback(true);
   } catch (error) {
-    const errorCode = error.code;
-    errorCode = alert('Usuario o contraseña incorrecta');
+    // const errorCode = error.code;
+    alert('Usuario o contraseña incorrecta');
     callback(false);
   }
 };
@@ -116,7 +116,7 @@ export const createPostFn = (post) => {
         content: post,
         author: user,
         uid: auth.currentUser.uid,
-        like: 0, 
+        like: 0,
         likesCounter: [],
       });
     });
@@ -127,7 +127,7 @@ export const createPostFn = (post) => {
 // obtener usuario logeado //
 export async function obtenerUsuario() {
   const querySnapshot = await getDocs(collection(db, 'users'));
-  let userGetName = [];
+  const userGetName = [];
   querySnapshot.forEach((doc) => {
     const user = auth.currentUser.uid;
     // console.log(user);
@@ -154,7 +154,7 @@ export const deletePost = async (postId) => {
   const postIdAsString = String(postId); // lo convierte a cadena de texto
   try {
     await deleteDoc(doc(db, 'post', postIdAsString));
-    postContainer.remove();
+    // postContainer.remove();
   } catch (error) {
     console.log(error);
   }
@@ -189,7 +189,7 @@ export const giveLike = async (postId) => {
 };
 
 //  ---            leer datos almacenados en firestore        --  //
-export const showData = async () => {
+export const showData = async (navigateTo) => {
   try {
     const querySnapshot = await getDocs(collection(db, 'post'));
     const timeLineSection = document.querySelector('.timeLineSection');
@@ -346,7 +346,9 @@ export const readPostProfileUser = async () => {
 
   if (user) {
     // const currentUid = user.uid;
-    const querySnapshot = await getDocs(query(collection(db, 'post'), where('uid', '===', user.uid))); // Esta consulta busca documentos en la colección "cities" donde el campo "capital" sea igual a true.
+  const querySnapshot = await getDocs(query(collection(db, 'post'), where('uid', '===',
+  // user.uid))); // Esta consulta busca documentos en la colección "cities" donde el 
+  // campo "capital" sea igual a true.
 
     // const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
